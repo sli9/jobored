@@ -1,0 +1,11 @@
+.Card {
+    background-color: #FFFFFF;
+    height: 137px;
+    width: 773px;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.Dot {
+    color: #7B7C88;
+}
