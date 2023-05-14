@@ -22,13 +22,15 @@ function App() {
         styles={() => ({
             main: {
                 backgroundColor: '#f5f5f5',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+
             },
         })}
     >
-        <div style={{minWidth: '1116px',}}>
+        <div style={{
+             display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center', gap: '16px'
+        }}>
             <Routes>
                 <Route path={'/'} element={<SearchVacanciesPage/>}/>
                 <Route path={'/favorite'} element={<FavoritePage/>}/>
