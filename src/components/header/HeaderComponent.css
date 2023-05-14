@@ -1,0 +1,59 @@
+.App-logo {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 30px;
+    margin-left: 162px;
+
+}
+@media screen and (max-width: 1000px){
+    .App-logo {
+        margin-left: 35px;
+    }
+}
+.App-logo::before, .App-logo::after {
+    content: '';
+    border-radius: 100px/46px;
+    position: absolute;
+    width: 39.36px;
+    height: 15px;
+    left: -4.42px;
+    top: 7.37px;
+    background: #5E96FC;
+}
+.App-logo::before {
+    transform: rotate(44.78deg);
+}
+.App-logo::after {
+    transform: rotate(-44.78deg);
+}
+.App-logo-text {
+    font-family: Poppins, sans-serif;
+    font-size: 24px;
+    line-height: 36px;
+    margin-left: 38px;
+}
+
+.App-nav {
+    display: flex;
+    margin: auto;
+    gap: 60px;
+}
+.App-hidden {
+    visibility: hidden;
+}
+@media screen and (max-width: 768px){
+    .App-nav {
+        margin-right: 30px;
+        gap: 30px;
+    }
+}
+@media screen and (max-width: 500px){
+    .App-nav {
+        margin-top: 38px;
+        margin-right: auto;
+    }
+    .App-logo {
+        margin-top: -20px;
+    }
+}
