@@ -10,7 +10,7 @@ import {skipToken} from "@reduxjs/toolkit/query";
 import "./App.css"
 
 function App() {
-    const skip = !!localStorage.getItem('token')
+    const skip = localStorage.getItem('token')
     const {data} = useGetTokenQuery(skip ? skipToken : undefined)
 
     if (data && data.access_token !== null) localStorage.setItem('token', data.access_token)
@@ -20,23 +20,25 @@ function App() {
         padding='md'
         header={<Header height={84}><HeaderComponent/></Header>}
         styles={() => ({
-            main: {
+            body: {
                 backgroundColor: '#f5f5f5',
-
+                fontSize: '16px',
+            },
+            main: {
+                paddingTop: '124px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '16px'
             },
         })}
     >
-        <div style={{
-             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center', gap: '16px'
-        }}>
-            <Routes>
-                <Route path={'/'} element={<SearchVacanciesPage/>}/>
-                <Route path={'/favorite'} element={<FavoritePage/>}/>
-                <Route path='*' element={<div>NOT FOUND 404</div>}/>
-            </Routes>
-        </div>
+
+        <Routes>
+            <Route path={'/'} element={<SearchVacanciesPage/>}/>
+            <Route path={'/favorite'} element={<FavoritePage/>}/>
+            <Route path='*' element={<div>NOT FOUND 404</div>}/>
+        </Routes>
     </AppShell>
 }
 

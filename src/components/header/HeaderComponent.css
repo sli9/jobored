@@ -6,11 +6,13 @@
     margin-left: 162px;
 
 }
-@media screen and (max-width: 1000px){
+
+@media screen and (max-width: 1000px) {
     .App-logo {
         margin-left: 35px;
     }
 }
+
 .App-logo::before, .App-logo::after {
     content: '';
     border-radius: 100px/46px;
@@ -21,12 +23,15 @@
     top: 7.37px;
     background: #5E96FC;
 }
+
 .App-logo::before {
     transform: rotate(44.78deg);
 }
+
 .App-logo::after {
     transform: rotate(-44.78deg);
 }
+
 .App-logo-text {
     font-family: Poppins, sans-serif;
     font-size: 24px;
@@ -39,21 +44,32 @@
     display: flex;
     margin: auto;
     gap: 60px;
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-align: left;
 }
-.App-hidden {
-    visibility: hidden;
+
+.App-nav .active {
+    font-weight: 400;
+    color: #5E96FC;
 }
-@media screen and (max-width: 768px){
+
+@media screen and (max-width: 768px) {
     .App-nav {
         margin-right: 30px;
         gap: 30px;
     }
 }
-@media screen and (max-width: 500px){
+
+@media screen and (max-width: 500px) {
     .App-nav {
         margin-top: 38px;
         margin-right: auto;
     }
+
     .App-logo {
         margin-top: -20px;
     }

@@ -14,7 +14,7 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <MantineProvider>
+                <MantineProvider theme={{fontFamily: 'Inter'}}>
                     <App/>
                 </MantineProvider>
             </BrowserRouter>

@@ -36,14 +36,15 @@ export const superJobAPI = createApi({
             }
 
             return headers
-        }
+        },
+        credentials: 'include'
     }),
     endpoints: (builder) => ({
         getToken: builder.query<TokenType, void>({
             query: () => '/2.0/oauth2/password/?login=sergei.stralenia@gmail.com&password=paralect123&client_id=2356&client_secret=v3.r.137440105.ffdbab114f92b821eac4e21f485343924a773131.06c3bdbb8446aeb91c35b80c42ff69eb9c457948',
         }),
         fetchVacancies: builder.query<VacanciesResponseType, void>({
-            query: () => '/2.0/vacancies/?published=1&count=10'
+            query: () => '/2.0/vacancies/?published=1&count=4'
         }),
     }),
 })
