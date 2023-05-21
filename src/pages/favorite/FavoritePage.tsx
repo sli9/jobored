@@ -1,6 +1,5 @@
 import React from "react";
 import {Card, Group, Text} from "@mantine/core";
-import "../main/VacanciesPage.css"
 
 export const FavoritePage = () => {
     return <div className={'Container'}>
