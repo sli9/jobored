@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {FilterParamsType} from "../components/filter/Filter";
 
 export type TokenType = {
     access_token: string
@@ -43,8 +44,8 @@ export const superJobAPI = createApi({
         getToken: builder.query<TokenType, void>({
             query: () => '/oauth2/password/?login=sergei.stralenia@gmail.com&password=paralect123&client_id=2356&client_secret=v3.r.137440105.ffdbab114f92b821eac4e21f485343924a773131.06c3bdbb8446aeb91c35b80c42ff69eb9c457948',
         }),
-        fetchVacancies: builder.query<VacanciesResponseType, string>({
-            query: (keyword) => `/vacancies/?published=1&count=4&keyword=${keyword}`
+        fetchVacancies: builder.query<VacanciesResponseType, FilterParamsType >({
+            query: (params) => `/vacancies/?published=1&count=4&keyword=${params.keyword}&catalogues=${params.catalogues}&payment_from=${params.payment_from}&payment_to=${params.payment_to}`
         }),
         getCatalogues: builder.query<Array<{ title: string, key: number }>, void>({
             query: () => '/catalogues/'

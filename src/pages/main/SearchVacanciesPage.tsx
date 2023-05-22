@@ -1,33 +1,46 @@
 import {Box, Button, Card, Flex, Input, Loader, Text} from "@mantine/core";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {useLazyFetchVacanciesQuery} from "../../store/superJobAPI";
-import {Filter} from "../../components/filter/Filter";
+import {Filter, FilterParamsType} from "../../components/filter/Filter";
 import {useSearchParams} from "react-router-dom";
 
 export const SearchVacanciesPage = () => {
-    const [searchParams, setSearchParams] = useSearchParams({published: '1', count: '4'})
+    const [searchParams, setSearchParams] = useSearchParams()
     const keywordParam = searchParams.get('keyword') || ''
+    const industryParam = searchParams.get('catalogues') || ''
+    const payFromParam = searchParams.get('payment_from') || ''
+    const payToParam = searchParams.get('payment_to') || ''
+
     const [keyWord, setKeyWord] = useState<string>(keywordParam)
+
     const [fetchVacancies, {data, isLoading}] = useLazyFetchVacanciesQuery()
 
-
+    const filterParams: FilterParamsType = {
+        catalogues: industryParam,
+        payment_from: payFromParam,
+        payment_to: payToParam,
+        keyword: keywordParam,
+    }
     useEffect(() => {
-        fetchVacancies(keywordParam)
-    }, [keywordParam])
+        fetchVacancies(filterParams)
+    }, [])
 
-    const handleSearch = () => {
-        const query = keyWord
-        setSearchParams(searchParams => {
-            searchParams.set('keyword', query)
-            return searchParams
-        })
-        fetchVacancies(query)
+    const fetchWithParams = () => {
+
+        if (keyWord?.length) filterParams['keyword'] = keyWord
+
+        setSearchParams(filterParams)
+
+        fetchVacancies(filterParams)
     }
 
 
     return <Flex gap="28px">
 
-        <Filter/>
+        <Filter  setSearchParams={setSearchParams}
+                keyWordParam={keywordParam} fetchVacancies={fetchVacancies}
+                filterParams={filterParams}
+        />
 
         <Box
             sx={() => ({
@@ -46,7 +59,7 @@ export const SearchVacanciesPage = () => {
                 rightSection={
                     <Button radius="md" fw={500} lh={'21px'} loading={isLoading}
                             loaderPosition="center"
-                            onClick={handleSearch}
+                            onClick={fetchWithParams}
                             sx={{
                                 backgroundColor: '#5E96FC',
                                 '&:hover': {backgroundColor: '#92C1FF'},

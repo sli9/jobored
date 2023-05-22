@@ -1,14 +1,41 @@
-import {Button, Card, Group, Loader, Select, Text} from "@mantine/core";
-import React, {useState} from "react";
+import {Button, Card, Flex, Group, Input, Loader, Select, Text} from "@mantine/core";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {useGetCataloguesQuery} from "../../store/superJobAPI";
+import {URLSearchParamsInit} from "react-router-dom/dist/dom";
 
-export const Filter = () => {
+type FilterPropsType = {
+    keyWordParam: string
+    setSearchParams: (arg: URLSearchParamsInit) => void
+    fetchVacancies: (arg: FilterParamsType) => void
+    filterParams: FilterParamsType
+}
+export type FilterParamsType = {
+    catalogues: string
+    payment_from: string
+    payment_to: string
+    keyword: string
+}
+
+export const Filter = (props: FilterPropsType) => {
 
     const {data, isLoading} = useGetCataloguesQuery()
-    const [industryValue, setIndustryValue] = useState<string | null>(null);
-    const [payFromValue, setPayFromValue] = useState<string | null>(null);
-    const [payToValue, setPayToValue] = useState<string | null>(null);
+    const [industryValue, setIndustryValue] = useState<string | null>(props.filterParams.catalogues);
+    const [payFromValue, setPayFromValue] = useState<string>( props.filterParams.payment_from);
+    const [payToValue, setPayToValue] = useState<string>(props.filterParams.payment_to);
     const [isActive, setIsActive] = useState<boolean>(false)
+
+    useEffect(() => {
+        props.setSearchParams(props.filterParams)
+    }, [industryValue, payFromValue, payToValue, props.keyWordParam])
+
+    if (industryValue?.length) props.filterParams['catalogues'] = industryValue
+    if (payFromValue?.length) props.filterParams['payment_from'] = payFromValue.toString()
+    if (payToValue?.length) props.filterParams['payment_to'] = payToValue.toString()
+
+    const handleFilterSearch = () => {
+        props.fetchVacancies(props.filterParams)
+
+    }
 
     return <Card w={'315px'} h={'360px'} shadow="sm" padding="20px" radius="12px"
                  sx={{
@@ -23,6 +50,11 @@ export const Filter = () => {
             Фильтры
             <Group>
                 <Button variant="subtle" c="#ACADB9" size="sm"
+                        onClick={() => {
+                            setPayFromValue('')
+                            setPayToValue('')
+                            setIndustryValue('')
+                        }}
                         styles={{
                             root: {
                                 height: 'auto',
@@ -76,29 +108,52 @@ export const Filter = () => {
         <Text weight={700} lh={'20px'} mt={'20px'}>
             Оклад
 
-            <Select mt={'8px'} size="md" radius={'8px'}
-                    placeholder="От"
-                    searchable
-                    value={payFromValue}
-                    onChange={setPayFromValue}
-                    styles={{
-                        input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
-                    }}
-                    data={[]}
+            <Input
+                rightSection={<Flex direction={'column'} gap={'11px'}>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5" stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5" stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                </Flex>
+                }
+                rightSectionWidth={30}
+                value={payFromValue}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPayFromValue(e.target.value)}
+                placeholder="От"
+                size="md"
+                mt={'8px'}
+                radius="8px"
+                styles={{
+                    input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
+                }}
             />
-            <Select mt={'8px'} size="md" radius={'8px'}
-                    placeholder="До"
-                    searchable
-                    value={payToValue}
-                    onChange={setPayToValue}
-                    styles={{
-                        input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
-                    }}
-                    data={[]}
+            <Input
+                rightSection={<Flex direction={'column'} gap={'11px'}>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5" stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5" stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                </Flex>
+                }
+                rightSectionWidth={30}
+                value={payToValue}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPayToValue(e.target.value)}
+                placeholder="До"
+                size="md"
+                mt={'8px'}
+                radius="8px"
+                styles={{
+                    input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
+                }}
             />
         </Text>
 
         <Button size="sm" fullWidth mt={'20px'} radius={'8px'}
+                onClick={handleFilterSearch}
                 sx={{
                     backgroundColor: '#5E96FC',
                     '&:hover': {backgroundColor: '#92C1FF'},
