@@ -30,6 +30,7 @@ function App() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: '16px'
+
             },
         })}
     >
