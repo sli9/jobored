@@ -8,6 +8,7 @@ import {FavoritePage} from "./pages/favorite/FavoritePage";
 import {useGetTokenQuery} from "./store/superJobAPI";
 import {skipToken} from "@reduxjs/toolkit/query";
 import "./App.css"
+import {Vacancy} from "./components/vacancy/Vacancy";
 
 function App() {
     const skip = localStorage.getItem('token')
@@ -38,6 +39,7 @@ function App() {
         <Routes>
             <Route path={'/'} element={<SearchVacanciesPage/>}/>
             <Route path={'/favorite'} element={<FavoritePage/>}/>
+            <Route path={'/vacancy'} element={<Vacancy/>}/>
             <Route path='*' element={<div>NOT FOUND 404</div>}/>
         </Routes>
     </AppShell>
