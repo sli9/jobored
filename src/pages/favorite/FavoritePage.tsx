@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Card, Flex, Loader, Text} from "@mantine/core";
-import {useSearchParams} from "react-router-dom";
+import {Box, Card, Flex, Loader, Text} from "@mantine/core";
 import {useLazyGetFavoritesQuery} from "../../store/superJobAPI";
 
 export const FavoritePage = () => {
-    const  [getFavorites, {data, isLoading}] = useLazyGetFavoritesQuery()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [getFavorites, {data, isLoading}] = useLazyGetFavoritesQuery()
 
     const [favoritesID, setFavoritesID] = useState<Array<string>>(Object.values(JSON.parse(localStorage.getItem('favorite') as string)))
 
@@ -29,12 +27,21 @@ export const FavoritePage = () => {
         setFavoritesID(Object.values(arrFavorite))
     }
 
-    return <Flex gap="28px" direction={'column'} align={{base: 'center', sm: 'initial'}}>
+    return <Box
+        sx={() => ({
+            width: '773px',
+            height: '100%',
+            '@media (max-width: 1150px)': {
+                width: '100%'
+            }
+        })}
+    >
 
         {isLoading && <Flex mih={'100vh'} justify="center" align="center"><Loader size='xl'/></Flex>}
 
         {data?.objects.map(object =>
-            <Card key={object.id} shadow="sm" padding="xl" radius="12px" mt={16}
+            <Card data-elem={`vacancy-${object.id}`}
+                  key={object.id} shadow="sm" padding="xl" radius="12px" mt={16}
                   sx={{display: 'flex', flexDirection: 'column', gap: '13px'}}
             >
                 <Text weight={600} size={20} lineClamp={1} c={'#5E96FC'} lh={'24px'}
@@ -43,7 +50,8 @@ export const FavoritePage = () => {
                       }}
                 >
                     {object.profession}
-                    <svg width="24" height="24" viewBox="0 0 24 24"
+                    <svg data-elem={`vacancy-${object.id}-shortlist-button`}
+                         width="24" height="24" viewBox="0 0 24 24"
                          onClick={() => handleFavorite(object.id)}
                          fill={favoritesID?.includes(object.id.toString()) ? "#5E96FC" : "none"}
                          xmlns="http://www.w3.org/2000/svg">
@@ -83,5 +91,5 @@ export const FavoritePage = () => {
                 </Text>
             </Card>)
         }
-            </Flex>
-        }
+    </Box>
+}

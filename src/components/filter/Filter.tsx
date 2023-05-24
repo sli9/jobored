@@ -1,5 +1,5 @@
 import {Button, Card, Flex, Group, Input, Loader, Select, Text} from "@mantine/core";
-import React, {ChangeEvent, useCallback, useEffect, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import {useGetCataloguesQuery} from "../../store/superJobAPI";
 import {URLSearchParamsInit} from "react-router-dom/dist/dom";
 import {FilterParamsType} from "../../pages/main/SearchVacanciesPage";
@@ -19,17 +19,27 @@ export const Filter = React.memo((props: FilterPropsType) => {
         const [payToValue, setPayToValue] = useState<string>(props.filterParams.payment_to);
         const [isActive, setIsActive] = useState<boolean>(false)
 
-        useEffect(() => {
-            props.setSearchParams(props.filterParams)
-        }, [industryValue, payFromValue, payToValue, props.keyWordParam])
 
-        if (industryValue?.length) props.filterParams['catalogues'] = industryValue
-        if (payFromValue?.length) props.filterParams['payment_from'] = payFromValue.toString()
-        if (payToValue?.length) props.filterParams['payment_to'] = payToValue.toString()
+        const handleFilterSearch = () => {
+            debugger
+            let filter: FilterParamsType = {...props.filterParams, keyword: props.keyWordParam}
 
-        const handleFilterSearch = useCallback(() => {
-            props.fetchVacancies(props.filterParams)
-        }, [props.filterParams])
+            if (industryValue !== props.filterParams.catalogues) {
+                filter = {
+                    ...props.filterParams,
+                    catalogues: industryValue === null ? '' : industryValue.toString()
+                }
+            }
+            if (payFromValue !== props.filterParams.payment_from) {
+                filter = {...props.filterParams, payment_from: payFromValue.toString()}
+            }
+            if (payToValue !== props.filterParams.payment_to) {
+                filter = {...props.filterParams, payment_to: payToValue.toString()}
+            }
+
+            props.setSearchParams(filter)
+            props.fetchVacancies(filter)
+        }
 
         const handleClearButton = useCallback(() => {
             setIndustryValue('')
@@ -83,7 +93,7 @@ export const Filter = React.memo((props: FilterPropsType) => {
             <Text weight={700} lh={'20px'}>
                 Отрасль
 
-                <Select mt={'8px'} size="md" radius={'8px'}
+                <Select data-elem="industry-select" mt={'8px'} size="md" radius={'8px'}
                         icon={isLoading && <Loader size="sm" color="#ACADB9"/>}
                         placeholder="Выберете отрасль"
                         rightSection={
@@ -110,55 +120,60 @@ export const Filter = React.memo((props: FilterPropsType) => {
             <Text weight={700} lh={'20px'} mt={'20px'}>
                 Оклад
 
-                <Input
-                    rightSection={<Flex direction={'column'} gap={'11px'}>
-                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5"
-                                  stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
-                        </svg>
-                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5"
-                                  stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
-                        </svg>
-                    </Flex>
-                    }
-                    rightSectionWidth={30}
-                    value={payFromValue}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPayFromValue(e.target.value)}
-                    placeholder="От"
-                    size="md"
-                    mt={'8px'}
-                    radius="8px"
-                    styles={{
-                        input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
-                    }}
+                <Input data-elem="salary-from-input"
+                       rightSection={<Flex direction={'column'} gap={'11px'}>
+                           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                               <path
+                                   d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5"
+                                   stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                           </svg>
+                           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                               <path
+                                   d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5"
+                                   stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                           </svg>
+                       </Flex>
+                       }
+                       rightSectionWidth={30}
+                       value={payFromValue}
+                       onChange={(e: ChangeEvent<HTMLInputElement>) => setPayFromValue(e.target.value)}
+                       placeholder="От"
+                       size="md"
+                       mt={'8px'}
+                       radius="8px"
+                       styles={{
+                           input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
+                       }}
                 />
-                <Input
-                    rightSection={<Flex direction={'column'} gap={'11px'}>
-                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5"
-                                  stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
-                        </svg>
-                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5"
-                                  stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
-                        </svg>
-                    </Flex>
-                    }
-                    rightSectionWidth={30}
-                    value={payToValue}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPayToValue(e.target.value)}
-                    placeholder="До"
-                    size="md"
-                    mt={'8px'}
-                    radius="8px"
-                    styles={{
-                        input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
-                    }}
+                <Input data-elem="salary-to-input"
+                       rightSection={<Flex direction={'column'} gap={'11px'}>
+                           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                               <path
+                                   d="M8.50006 4.5L5.39054 1.83469C5.16584 1.6421 4.83428 1.6421 4.60959 1.83469L1.50006 4.5"
+                                   stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                           </svg>
+                           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                               <path
+                                   d="M1.49994 1.5L4.60946 4.16531C4.83416 4.3579 5.16572 4.3579 5.39041 4.16531L8.49994 1.5"
+                                   stroke="#ACADB9" strokeWidth="1.5" strokeLinecap="round"/>
+                           </svg>
+                       </Flex>
+                       }
+                       rightSectionWidth={30}
+                       value={payToValue}
+                       onChange={(e: ChangeEvent<HTMLInputElement>) => setPayToValue(e.target.value)}
+                       placeholder="До"
+                       size="md"
+                       mt={'8px'}
+                       radius="8px"
+                       styles={{
+                           input: {fontSize: '14px', caretColor: '#3B7CD3', '&:hover': {borderColor: '#5E96FC'}},
+                       }}
                 />
             </Text>
 
-            <Button size="sm" fullWidth mt={'20px'} radius={'8px'}
+            <Button data-elem="search-button"
+                    size="sm" fullWidth mt={'20px'} radius={'8px'}
                     onClick={handleFilterSearch}
                     sx={{
                         backgroundColor: '#5E96FC',
