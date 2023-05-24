@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/jobored/static/css/main.71b54b71.css",
+    "main.js": "/jobored/static/js/main.19cbf26f.js",
+    "index.html": "/jobored/index.html",
+    "main.71b54b71.css.map": "/jobored/static/css/main.71b54b71.css.map",
+    "main.19cbf26f.js.map": "/jobored/static/js/main.19cbf26f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.71b54b71.css",
+    "static/js/main.19cbf26f.js"
+  ]
+}
