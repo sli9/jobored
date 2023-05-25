@@ -2,6 +2,7 @@
   "name": "jobored-test",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://sli9.github.io/jobored",
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@mantine/carousel": "^6.0.10",
@@ -30,6 +31,7 @@
     "@types/react-dom": "^18.2.1",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^8.0.0-rc03",
+    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -42,7 +44,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

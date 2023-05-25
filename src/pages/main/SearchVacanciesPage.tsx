@@ -70,7 +70,7 @@ export const SearchVacanciesPage = () => {
 
         <Filter setSearchParams={setSearchParams}
                 keyWordParam={filterParams.keyword} fetchVacancies={fetchVacancies}
-                filterParams={filterParams}
+                filterParams={filterParams} isLoading={isLoading}
         />
 
         <Box

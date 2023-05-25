@@ -9,6 +9,7 @@ type FilterPropsType = {
     setSearchParams: (arg: URLSearchParamsInit) => void
     fetchVacancies: (arg: FilterParamsType) => void
     filterParams: FilterParamsType
+    isLoading: boolean
 }
 
 export const Filter = React.memo((props: FilterPropsType) => {
@@ -175,6 +176,7 @@ export const Filter = React.memo((props: FilterPropsType) => {
             <Button data-elem="search-button"
                     size="sm" fullWidth mt={'20px'} radius={'8px'}
                     onClick={handleFilterSearch}
+                    loading={props.isLoading}
                     sx={{
                         backgroundColor: '#5E96FC',
                         '&:hover': {backgroundColor: '#92C1FF'},
