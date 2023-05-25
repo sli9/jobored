@@ -30,7 +30,16 @@ export const SearchVacanciesPage = () => {
         keyword: keywordParam,
         ids: [],
     })
-    const [favoritesID, setFavoritesID] = useState<Array<string>>(Object.values(JSON.parse(localStorage.getItem('favorite') as string)))
+
+    let favorites: Array<string> = []
+    const favoritesLS = localStorage.getItem('favorite')
+
+    if (favoritesLS) {
+        favorites = (Object.values(JSON.parse(favoritesLS)))
+    }
+
+    console.log(favorites)
+    const [favoritesID, setFavoritesID] = useState<Array<string>>(favorites)
 
 
     const [fetchVacancies, {data, isLoading}] = useLazyFetchVacanciesQuery()
@@ -38,7 +47,7 @@ export const SearchVacanciesPage = () => {
     useEffect(() => {
         fetchVacancies(filterParams)
 
-        if (localStorage.getItem('favorite') === null) localStorage.setItem('favorite', JSON.stringify({}))
+
     }, [])
 
     const showVacancy = (e: MouseEvent<HTMLDivElement>) => {
